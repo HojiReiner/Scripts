@@ -15,8 +15,8 @@
 * Alias:
 
 ```shell
-Alias l='ls -l'
-``
+alias l='ls -l'
+```
 
 * Functions: 
 
