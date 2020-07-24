@@ -1,16 +1,16 @@
-#Shell scriptih cheat sheet
+# Shell scriptih cheat sheet
 
-##Setting up script
+## Setting up script
 
-*Create a file: touch `file.sh`
-*Make it executable: chmod 755 `file.sh`
+* Create a file: touch `file.sh`
+* Make it executable: chmod 755 `file.sh`
 
-*Path for scripts(folders which the shell looks for scripts):
-  *See existing paths: echo $PATH
-  *Add a path:export PATH=$PATH:`directory`
+* Path for scripts(folders which the shell looks for scripts):
+  * See existing paths: echo $PATH
+  * Add a path:export PATH=$PATH:`directory`
 
 
-##Shell Scripting:
+## Shell Scripting:
 
 .Alias:
 	Ex:
