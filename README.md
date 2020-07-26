@@ -224,6 +224,66 @@ esac
 ```
 `*` will match anything
 
+### While and until
+* Works when test is true
+```bash
+number=0
+while [ "$number" -lt 10 ]; do
+    echo "Number = $number"
+    number=$((number + 1))
+done
+```
+
+* Works when test is false
+```bash
+number=0
+until [ "$number" -ge 10 ]; do
+    echo "Number = $number"
+    number=$((number + 1))
+done
+```
+
+### Option Arguments
+* `$#` indicates the number of arguments, from 0 to 9,
+0 is the program and 1-9 are the options.
+* `shift` reduces the parameters value down by one
+
+```bash
+echo "You start with $# positional parameters"
+
+# Loop until all parameters are used up
+while [ "$1" != "" ]; do
+    echo "Parameter 1 equals $1"
+    echo "You now have $# positional parameters"
+
+    # Shift all the parameters down by one
+    shift
+
+done
+```
+
+Ex: command -1 -2 -3
+It has 3 positional parameters (-1, -2, -3)
+
+###For
+```bash
+for variable in words; do
+    commands
+done
+
+Example1:
+for i in word1 word2 word3; do
+    echo $i
+done
+
+Example2:
+for i in "$@"; do
+    echo $i
+done
+```
+* `$@` contains all the positional parameters
+
+
 ## Debugging and errors
 * See what the script is doing
 ```bash
