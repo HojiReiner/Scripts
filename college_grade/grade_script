@@ -1,0 +1,103 @@
+#!/bin/bash
+
+#Script that calculates a college final grade
+#It need the calc script to work
+
+#=====================GLOBAL VAR===================
+#!To be deleted
+sum=0
+mects=0
+
+
+#=======================INIT=======================
+#Sets up data.txt if it doesnt exist
+if [ ! -e data.txt ]; then
+    touch data.txt
+    echo -e "0\n0" > data.txt
+fi
+
+#Sets up grade.md if it doesnt exist
+if [ ! -e grade.md ]; then
+    touch grade.md
+    echo "CLASS | GRADE | ECTS
+----- | ----- | ----" > grade.md
+    echo "# FINAL GRADE: --" >> grade.md
+fi
+
+
+#========================AUX=======================
+#Visual interface
+press_enter(){
+    echo -en "\nPress Enter to continue"
+    read -s
+    clear
+}
+
+#Checks data.txt to see if a class exists
+#Receives 1 argument, the name of the class
+check_class(){
+    while read line; do
+        if [ "$line" = "$1" ]; then
+            return 1
+        fi
+    done < data.txt
+
+    return 0
+}
+
+#Update the final grade
+update_average(){
+    sum=$(./calc -a $sum $(./calc -m $1 $2))
+    mects=$(./calc -a $mects $2)
+    avg=$(./calc -d $sum $mects)
+}
+
+#======================FUNCTIONS====================
+#Function that adds a new class
+ADD(){
+    echo -n "Class:"
+    read class
+    echo -n "Grade:"
+    read grade
+    echo -n "ECTS:"
+    read ects
+    
+    check_class $class
+
+    if [ "$?" = "1" ]; then
+        echo "Class already exists"
+    
+    else
+        #Updates data.txt
+        echo -e "$class\n$grade\n$ects" >> data.txt
+
+        #Updates grade.md
+        sed -i '$d' grade.md
+        echo "$class|$grade|$ects" >> grade.md
+        update_average $grade $ects
+        echo "# FINAL GRADE: $avg" >> grade.md
+    fi
+}
+
+
+#========================MENU========================
+clear
+selection=
+until [ "selection" = "0" ]; do
+    echo "    MENU
+
+    1 - New Class
+    2 - Remove Class
+
+    0 - Exit
+    "
+    echo -n "Enter selection: "
+    read selection
+    echo ""
+    case $selection in
+        1 ) ADD; press_enter ;;
+        2 ) echo "Not Implemented" ; press_enter ;;
+        0 ) exit ;;
+        * ) echo "Please enter 1, 2, or 0"; press_enter
+    esac
+done
