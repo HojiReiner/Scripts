@@ -1,0 +1,24 @@
+#!/bin/bash
+#Script for floating/integer math
+
+
+case $1 in
+    -a | --addition) 			echo $(python3 -c "print(format($2+$3, '.2f'))");;
+
+    -s | --subtraction)			echo $(python3 -c "print(format($2-$3, '.2f'))");;
+
+    -m | --multiplication)		echo $(python3 -c "print(format($2*$3, '.2f'))");;
+        
+    -d | --division)			echo $(python3 -c "print(format($2/$3, '.2f'))");;
+
+    -r | --rest)				echo $(python3 -c "print(format($2%$3, '.2f'))");;
+
+    -p | --power)				echo $(python3 -c "print(format($2**$3, '.2f'))");;
+
+    *)							exit 1
+
+esac
+
+exit 0
+
+    
