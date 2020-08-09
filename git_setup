@@ -1,0 +1,82 @@
+#!/bin/bash
+#Creates a git ready folder
+
+#Function that changes the colour of the output
+color(){
+    #Normal color (For most text)
+    if [ "$1" = "N" ]; then
+        printf "\e[0m%b\e[1m"
+    
+    #Blue color (Directories)
+    elif [ "$1" = "B" ]; then
+        printf "\e[34m%b\e[1m"
+    
+    #Red color (Warnings)
+    elif [ "$1" = "R" ]; then
+        printf "\e[91m%b\e[1m"
+    fi
+}
+
+
+#========================SCRIPT==========================
+clear
+color N
+echo -e "Welcome to git setup\n"
+
+##### Create Folder
+folder=
+current_directory=$(pwd)
+
+echo -e "Current folders in this directory:"
+color B
+ls -d */
+color N
+
+read -p "New folder name: " folder
+
+while [ -d $folder ]; do
+    clear
+    color R
+    echo -e "$folder/ already exists!!!\n"
+    color B
+    ls -d */
+    color N
+    read -p "New folder name: " folder
+done
+
+git_dir="$current_directory/$folder"
+mkdir $git_dir
+
+
+##### Set up git
+clear
+cd $git_dir
+git init
+
+read -p "Your email: " email
+git config --global user.email $email
+
+read -p "Your name: " name
+git config --global user.name $name
+
+clear
+color R
+read -p "Will you add a repository [Y/N]? " ans
+color N
+ans=${ans^^}
+
+if [ "$ans" = "N" ]; then
+    touch README.md
+    git add README.md
+    git commit -m "Git Created"
+    exit 1
+
+    elif [ "$ans" = "Y" ]; then
+    echo -en "\nRepository URL: "
+    read URL
+    git remote add origin $URL
+    git pull origin master
+    
+fi
+
+exit 0
